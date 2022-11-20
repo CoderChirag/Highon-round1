@@ -12,6 +12,7 @@ function App() {
 		description: '',
 	});
 	const [cardData, setCardData] = useState([]);
+	const [searchText, setSearchText] = useState('');
 
 	function saveData() {
 		setCardData(prev => [...prev, formData]);
@@ -20,7 +21,7 @@ function App() {
 
 	return (
 		<div className='App'>
-			<SearchBar />
+			<SearchBar searchTextHandler={setSearchText} />
 			<CreateButton modalHandler={setShowModal} />
 			{showModal && (
 				<Modal
@@ -41,45 +42,55 @@ function App() {
 			>
 				{cardData.length > 0 &&
 					cardData.map((card, index) => {
-						return (
-							<Card key={index}>
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'space-between',
-									}}
-								>
+						if (
+							searchText.length === 0 ||
+							card.title
+								.toLowerCase()
+								.includes(searchText.toLowerCase()) ||
+							card.description
+								.toLowerCase()
+								.includes(searchText.toLowerCase())
+						) {
+							return (
+								<Card key={index}>
 									<div
 										style={{
-											width: '50%',
-											backgroundColor: card.color,
-											height: 'auto',
-											minHeight: '150px',
-											borderRadius: '25px',
-										}}
-									></div>
-									<div
-										style={{
-											fontWeight: 'normal',
-											wordWrap: 'break-word',
-											width: '50%',
+											display: 'flex',
+											justifyContent: 'space-between',
 										}}
 									>
-										{card.description}
+										<div
+											style={{
+												width: '50%',
+												backgroundColor: card.color,
+												height: 'auto',
+												minHeight: '150px',
+												borderRadius: '25px',
+											}}
+										></div>
+										<div
+											style={{
+												fontWeight: 'normal',
+												wordWrap: 'break-word',
+												width: '50%',
+											}}
+										>
+											{card.description}
+										</div>
 									</div>
-								</div>
-								<div
-									style={{
-										backgroundColor: '#FF0000',
-										marginTop: '25px',
-										padding: '10px',
-										borderRadius: '15px',
-									}}
-								>
-									{card.title}
-								</div>
-							</Card>
-						);
+									<div
+										style={{
+											backgroundColor: '#FF0000',
+											marginTop: '25px',
+											padding: '10px',
+											borderRadius: '15px',
+										}}
+									>
+										{card.title}
+									</div>
+								</Card>
+							);
+						}
 					})}
 			</div>
 		</div>

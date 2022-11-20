@@ -1,8 +1,12 @@
 import SearchBarInput from './searchBar.styles';
-const SearchBar = () => {
+const SearchBar = ({ searchTextHandler }) => {
 	return (
 		<div style={{ textAlign: 'center' }}>
-			<SearchBarInput type='search' placeholder='Search' />
+			<SearchBarInput
+				type='search'
+				placeholder='Search'
+				onChange={e => searchTextHandler(e.target.value)}
+			/>
 		</div>
 	);
 };
